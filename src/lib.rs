@@ -108,20 +108,21 @@ impl Id {
     /// ```
     pub fn from_url_safe(s: String) -> Result<Id, ParseIdError> {
         let mut split = s.split('-');
-        let uuid_as_128 = split.next()
+        let uuid_as_128 = split
+            .next()
             .ok_or(ParseIdError::NoBaseFound)
-            .and_then(|uuid_as_128| uuid_as_128.parse::<u128>().map_err(|_| ParseIdError::NoBaseFound));
-        let c = split.next()
+            .and_then(|uuid_as_128| {
+                uuid_as_128
+                    .parse::<u128>()
+                    .map_err(|_| ParseIdError::NoBaseFound)
+            });
+        let c = split
+            .next()
             .ok_or(ParseIdError::NoCounterFound)
             .and_then(|c| c.parse::<u8>().map_err(|_| ParseIdError::NoCounterFound));
 
         match (uuid_as_128, c) {
-            (Ok(uuid_as_128), Ok(c)) => {
-                Ok(Id {
-                    uuid_as_128,
-                    c,
-                })
-            },
+            (Ok(uuid_as_128), Ok(c)) => Ok(Id { uuid_as_128, c }),
             (Err(err), _) | (_, Err(err)) => Err(err),
         }
     }
@@ -132,7 +133,6 @@ pub enum ParseIdError {
     NoBaseFound,
     NoCounterFound,
 }
-
 
 #[cfg(test)]
 mod tests {
