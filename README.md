@@ -5,6 +5,16 @@ This is a porting of hyper written in [javascript](https://github.com/mcollina/h
 
 ## Install
 
+## Prepare for release
+
+```
+cargo release  -vv --skip-publish <version>
+# wait for CI
+git checkout <tag>
+cargo publish
+```
+
+
 ## License
 
 See [LICENSE](./LICENSE) file
