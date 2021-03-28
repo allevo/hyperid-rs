@@ -1,6 +1,6 @@
 use std::vec;
 
-use hyperid::{HyperId};
+use hyperid::HyperId;
 
 #[test]
 fn should_generate_always_different_ids() {

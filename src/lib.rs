@@ -7,7 +7,7 @@ pub struct Id {
 }
 
 impl Id {
-    pub fn get(&self) -> (u128, u8) {        
+    pub fn get(&self) -> (u128, u8) {
         (self.uuid_as_128, self.c)
     }
 }
@@ -18,14 +18,11 @@ pub struct HyperId {
 }
 
 impl HyperId {
-    pub fn new () -> Self {
+    pub fn new() -> Self {
         let uuid = Uuid::new_v4();
         let c: u8 = 0;
 
-        Self{
-            uuid,
-            c,
-        }
+        Self { uuid, c }
     }
 
     pub fn get(&self) -> Id {
@@ -36,8 +33,7 @@ impl HyperId {
     }
 
     pub fn generate(&mut self) -> Id {
-        self.c = self.c.checked_add(1)
-            .unwrap_or(0);
+        self.c = self.c.checked_add(1).unwrap_or(0);
         if self.c == 0 {
             self.uuid = Uuid::new_v4();
         }

@@ -1,13 +1,19 @@
 [package]
 name = "hyperid"
 version = "0.1.0"
+description = "Superfast id generator"
 authors = ["Tommaso Allevi <tomallevi@gmail.com>"]
+repository = "https://github.com/allevo/hyperid-rs"
 edition = "2018"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+license = "MIT"
+keywords = ["generator", "id", "unique"]
+categories = ["algorithms", "data-structures"]
 
 [dependencies]
 uuid = { version = "0.8", features = ["v4"] }
+
+[dev-dependencies]
 bencher = "0.1.5"
 
 [[bench]]
