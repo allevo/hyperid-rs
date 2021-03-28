@@ -1,0 +1,23 @@
+[package]
+name = "hyperid"
+version = "0.1.0"
+authors = ["Tommaso Allevi <tomallevi@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+uuid = { version = "0.8", features = ["v4"] }
+bencher = "0.1.5"
+
+[[bench]]
+name = "uuid"
+harness = false
+
+[[bench]]
+name = "compare_with_uuid"
+harness = false
+
+[[bench]]
+name = "add"
+harness = false
