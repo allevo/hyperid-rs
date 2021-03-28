@@ -12,12 +12,32 @@ impl Id {
     }
 }
 
+/// Id generator. Every instance create different generator.
+/// ```
+/// use hyperid::HyperId;
+/// let mut hyperid = HyperId::default();
+///
+/// let id = hyperid.generate();
+/// let id2 = hyperid.generate();
+///
+/// assert_ne!(id, id2);
+///
+/// let id = hyperid.get();
+/// let id2 = hyperid.get();
+///
+/// assert_eq!(id, id2);
+/// ```
 pub struct HyperId {
     uuid: Uuid,
     c: u8,
 }
 
 impl HyperId {
+    /// Create a new HyperId instance
+    /// ```
+    /// use hyperid::HyperId;
+    /// let mut hyperid = HyperId::new();
+    /// ```
     pub fn new() -> Self {
         let uuid = Uuid::new_v4();
         let c: u8 = 0;
@@ -25,6 +45,14 @@ impl HyperId {
         Self { uuid, c }
     }
 
+    /// Return the latest generated Id
+    /// ```
+    /// use hyperid::HyperId;
+    /// let mut hyperid = HyperId::new();
+    /// let id1 = hyperid.get();
+    /// let id2 = hyperid.get();
+    /// assert_eq!(id1, id2);
+    /// ```
     pub fn get(&self) -> Id {
         Id {
             uuid_as_128: self.uuid.as_u128(),
@@ -32,6 +60,14 @@ impl HyperId {
         }
     }
 
+    /// Generate the Id and returns it
+    /// ```
+    /// use hyperid::HyperId;
+    /// let mut hyperid = HyperId::new();
+    /// let id1 = hyperid.get();
+    /// let id2 = hyperid.generate();
+    /// assert_ne!(id1, id2);
+    /// ```
     pub fn generate(&mut self) -> Id {
         self.c = self.c.checked_add(1).unwrap_or(0);
         if self.c == 0 {
