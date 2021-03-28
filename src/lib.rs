@@ -1,3 +1,20 @@
+//! Superfast id generator
+//!
+//! # Example
+//!
+//! ```
+//! use hyperid::HyperId;
+//!
+//! let mut hyperid = HyperId::default();
+//!
+//! let id1 = hyperid.generate();
+//! let id2 = hyperid.generate();
+//!
+//! assert_ne!(id1, id2);
+//! println!("{}", id1.to_url_safe());
+//! ```
+//!
+
 use uuid::Uuid;
 
 /// Id generator. Every instance create different generator.
@@ -82,10 +99,6 @@ pub struct Id {
 }
 
 impl Id {
-    pub fn get(&self) -> (u128, u8) {
-        (self.uuid_as_128, self.c)
-    }
-
     /// Return an url safe string
     /// ```
     /// use hyperid::HyperId;
