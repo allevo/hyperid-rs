@@ -1,17 +1,5 @@
 use uuid::Uuid;
 
-#[derive(PartialEq, Debug)]
-pub struct Id {
-    uuid_as_128: u128,
-    c: u8,
-}
-
-impl Id {
-    pub fn get(&self) -> (u128, u8) {
-        (self.uuid_as_128, self.c)
-    }
-}
-
 /// Id generator. Every instance create different generator.
 /// ```
 /// use hyperid::HyperId;
@@ -86,6 +74,65 @@ impl Default for HyperId {
         Self::new()
     }
 }
+/// Structure for keeping data
+#[derive(PartialEq, Debug)]
+pub struct Id {
+    uuid_as_128: u128,
+    c: u8,
+}
+
+impl Id {
+    pub fn get(&self) -> (u128, u8) {
+        (self.uuid_as_128, self.c)
+    }
+
+    /// Return an url safe string
+    /// ```
+    /// use hyperid::HyperId;
+    /// let mut hyperid = HyperId::new();
+    /// let id = hyperid.get();
+    /// println!("{}", id.to_url_safe());
+    /// ```
+    pub fn to_url_safe(&self) -> String {
+        format!("{}-{}", self.uuid_as_128, self.c)
+    }
+
+    /// Return an url safe string
+    /// ```
+    /// use hyperid::{HyperId, Id};
+    /// let mut hyperid = HyperId::new();
+    /// let id1 = hyperid.get();
+    /// let s = id1.to_url_safe();
+    /// let id2 = Id::from_url_safe(s).unwrap();
+    /// assert_eq!(id1, id2);
+    /// ```
+    pub fn from_url_safe(s: String) -> Result<Id, ParseIdError> {
+        let mut split = s.split('-');
+        let uuid_as_128 = split.next()
+            .ok_or(ParseIdError::NoBaseFound)
+            .and_then(|uuid_as_128| uuid_as_128.parse::<u128>().map_err(|_| ParseIdError::NoBaseFound));
+        let c = split.next()
+            .ok_or(ParseIdError::NoCounterFound)
+            .and_then(|c| c.parse::<u8>().map_err(|_| ParseIdError::NoCounterFound));
+
+        match (uuid_as_128, c) {
+            (Ok(uuid_as_128), Ok(c)) => {
+                Ok(Id {
+                    uuid_as_128,
+                    c,
+                })
+            },
+            (Err(err), _) | (_, Err(err)) => Err(err),
+        }
+    }
+}
+
+#[derive(Debug)]
+pub enum ParseIdError {
+    NoBaseFound,
+    NoCounterFound,
+}
+
 
 #[cfg(test)]
 mod tests {
