@@ -24,6 +24,8 @@ fn main() {
     let id2 = hyperid.generate();
 
     assert_ne!(id1, id2);
+
+    println!("{}", id1.to_url_safe()); // prints "100300792492935192884946730361868995562-15"
 }
 ```
 
