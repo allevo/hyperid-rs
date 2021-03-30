@@ -11,11 +11,10 @@
 //! let id2 = hyperid.generate();
 //!
 //! assert_ne!(id1, id2);
+//! #[cfg(feature = "url_safe")]
 //! println!("{}", id1.to_url_safe()); // prints "100300792492935192884946730361868995562-15"
 //! ```
 //!
-
-use std::convert::TryInto;
 
 use uuid::Uuid;
 
@@ -108,6 +107,7 @@ impl Id {
     /// let id = hyperid.get();
     /// println!("{}", id.to_url_safe()); // 3ZAYYJilG7vHTqiUuaQdFg.0
     /// ```
+    #[cfg(feature = "url_safe")]
     pub fn to_url_safe(&self) -> String {
         let uuid_as_bytes = self.uuid_as_128.to_le_bytes();
         let str = base64::encode_config(uuid_as_bytes, base64::URL_SAFE_NO_PAD);
@@ -123,6 +123,7 @@ impl Id {
     /// let id2 = Id::from_url_safe(s).unwrap();
     /// assert_eq!(id1, id2);
     /// ```
+    #[cfg(feature = "url_safe")]
     pub fn from_url_safe(s: String) -> Result<Id, ParseIdError> {
         let mut split = s.split('.');
         let uuid_as_128 = split
@@ -131,7 +132,11 @@ impl Id {
             .and_then(|uuid_as_128| {
                 base64::decode_config(uuid_as_128, base64::URL_SAFE_NO_PAD)
                     .or(Err(ParseIdError::NoBaseFound))
-                    .and_then(|v| (*v).try_into().or(Err(ParseIdError::NoBaseFound)))
+                    .map(|mut v| {
+                        let mut arr = [0u8; 16];
+                        v.swap_with_slice(&mut arr);
+                        arr
+                    })
                     .map(u128::from_le_bytes)
             });
         let c = split
@@ -211,6 +216,7 @@ mod tests {
         assert_ne!(hyperid1.uuid, hyperid2.uuid);
     }
 
+    #[cfg(feature = "url_safe")]
     #[test]
     fn url_safe_encode_decode() {
         let hyperid = HyperId::default();

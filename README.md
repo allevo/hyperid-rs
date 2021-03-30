@@ -14,17 +14,23 @@ hyperid = "1"
 ## Usage
 
 ```rust
-
 use hyperid::HyperId;
 
 fn main() {
     let mut hyperid = HyperId::default();
 
+    // `generate` method returns a new id every time
     let id1 = hyperid.generate();
     let id2 = hyperid.generate();
 
     assert_ne!(id1, id2);
 
+    // `get` method returns the last generated id
+    let id3 = hyperid.get();
+
+    assert_eq!(id2, id3);
+
+    // Only if `url_safe` feature is enabled
     println!("{}", id1.to_url_safe()); // prints "3ZAYYJilG7vHTqiUuaQdFg.0"
 }
 ```
@@ -41,6 +47,9 @@ test uuid    ... bench:       1,657 ns/iter (+/- 148)
 ...
 ```
 
+## Features
+
+This crate has a feature `url_safe` that adds `to_url_safe` and `from_url_safe` methods.
 
 ## Prepare for release
 

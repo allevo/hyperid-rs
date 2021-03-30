@@ -12,7 +12,7 @@ categories = ["algorithms", "data-structures"]
 
 [dependencies]
 uuid = { version = "0.8", features = ["v4"] }
-base64 = "0"
+base64 = { version = "0", optional = true }
 
 [dev-dependencies]
 bencher = "0.1.5"
@@ -32,3 +32,7 @@ harness = false
 [[bench]]
 name = "url_safe"
 harness = false
+required-features = ["url_safe"]
+
+[features]
+url_safe = ["base64"]
