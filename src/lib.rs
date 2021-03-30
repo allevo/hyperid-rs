@@ -129,7 +129,8 @@ impl Id {
             .next()
             .ok_or(ParseIdError::NoBaseFound)
             .and_then(|uuid_as_128| {
-                base64::decode_config(uuid_as_128, base64::URL_SAFE_NO_PAD).or(Err(ParseIdError::NoBaseFound))
+                base64::decode_config(uuid_as_128, base64::URL_SAFE_NO_PAD)
+                    .or(Err(ParseIdError::NoBaseFound))
                     .and_then(|v| (*v).try_into().or(Err(ParseIdError::NoBaseFound)))
                     .map(u128::from_le_bytes)
             });

@@ -1,7 +1,7 @@
 #[macro_use]
 extern crate bencher;
 
-use base64::{URL_SAFE, URL_SAFE_NO_PAD, decode_config, encode_config};
+use base64::{decode_config, encode_config, URL_SAFE, URL_SAFE_NO_PAD};
 use bencher::Bencher;
 
 fn to_url_safe_url_safe_no_pad_be(bench: &mut Bencher) {
@@ -30,5 +30,11 @@ fn to_url_safe_url_safe_le(bench: &mut Bencher) {
     })
 }
 
-benchmark_group!(benches, to_url_safe_url_safe_no_pad_be, to_url_safe_url_safe_no_pad_le, to_url_safe_url_safe_be, to_url_safe_url_safe_le);
+benchmark_group!(
+    benches,
+    to_url_safe_url_safe_no_pad_be,
+    to_url_safe_url_safe_no_pad_le,
+    to_url_safe_url_safe_be,
+    to_url_safe_url_safe_le
+);
 benchmark_main!(benches);
