@@ -16,7 +16,6 @@
 //! ```
 
 #[cfg_attr(docsrs, feature(doc_cfg))]
-
 use uuid::Uuid;
 
 /// Id generator. Every instance create different generator.
