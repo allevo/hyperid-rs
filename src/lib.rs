@@ -14,7 +14,8 @@
 //! #[cfg(feature = "url_safe")]
 //! println!("{}", id1.to_url_safe()); // prints "100300792492935192884946730361868995562-15"
 //! ```
-//!
+
+#[rustversion::attr(nightly, feature(doc_cfg))]
 
 use uuid::Uuid;
 
@@ -107,6 +108,7 @@ impl Id {
     /// let id = hyperid.get();
     /// println!("{}", id.to_url_safe()); // 3ZAYYJilG7vHTqiUuaQdFg.0
     /// ```
+    #[doc(cfg(feature = "url_safe"))]
     #[cfg(feature = "url_safe")]
     pub fn to_url_safe(&self) -> String {
         let uuid_as_bytes = self.uuid_as_128.to_le_bytes();
@@ -123,6 +125,7 @@ impl Id {
     /// let id2 = Id::from_url_safe(s).unwrap();
     /// assert_eq!(id1, id2);
     /// ```
+    #[doc(cfg(feature = "url_safe"))]
     #[cfg(feature = "url_safe")]
     pub fn from_url_safe(s: String) -> Result<Id, ParseIdError> {
         let mut split = s.split('.');
