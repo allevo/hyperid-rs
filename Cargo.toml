@@ -10,6 +10,11 @@ license = "MIT"
 keywords = ["generator", "id", "unique"]
 categories = ["algorithms", "data-structures"]
 
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+rustc-args = ["--cfg", "docsrs"]
+
 [dependencies]
 uuid = { version = "0.8", features = ["v4"] }
 base64 = { version = "0", optional = true }
@@ -36,10 +41,3 @@ required-features = ["url_safe"]
 
 [features]
 url_safe = ["base64"]
-
-# docs.rs-specific configuration
-[package.metadata.docs.rs]
-# document all features
-all-features = true
-# defines the configuration attribute `docsrs`
-rustdoc-args = ["--cfg", "docsrs"]

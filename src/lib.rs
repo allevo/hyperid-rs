@@ -16,6 +16,7 @@
 //! ```
 
 #[cfg_attr(docsrs, feature(doc_cfg))]
+// Import uuid
 use uuid::Uuid;
 
 /// Id generator. Every instance create different generator.
