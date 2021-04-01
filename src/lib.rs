@@ -15,7 +15,7 @@
 //! println!("{}", id1.to_url_safe()); // prints "100300792492935192884946730361868995562-15"
 //! ```
 
-#[cfg_attr(docsrs, feature(doc_cfg))]
+#![cfg_attr(docsrs, feature(doc_cfg))]
 // Import uuid
 use uuid::Uuid;
 
