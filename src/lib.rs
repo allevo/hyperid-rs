@@ -52,6 +52,26 @@ impl HyperId {
         Self { uuid, c }
     }
 
+    /// Create a new HyperId instance starting from a given id
+    /// ```
+    /// use hyperid::{HyperId, Id};
+    /// let bytes = vec![0; 17];
+    /// let id = Id::from_bytes(bytes).unwrap();
+    /// let hyperid = HyperId::from_id(id);
+    /// let id = hyperid.get();
+    /// assert_eq!(vec![0; 17], id.into_bytes());
+    /// ```
+    pub fn from_id(id: Id) -> Self {
+        let uuid = id.uuid_as_128;
+        let uuid = Uuid::from_u128(uuid);
+        let c = id.c;
+
+        Self {
+            uuid,
+            c,
+        }
+    }
+
     /// Return the latest generated Id
     /// ```
     /// use hyperid::HyperId;
@@ -101,6 +121,41 @@ pub struct Id {
 }
 
 impl Id {
+
+    /// Return a bytes representation of id
+    /// ```
+    /// use hyperid::HyperId;
+    /// let mut hyperid = HyperId::new();
+    /// let id = hyperid.get();
+    /// println!("{:?}", id.into_bytes());
+    /// ```
+    pub fn into_bytes(self) -> Vec<u8> {
+        let uuid_as_128 = self.uuid_as_128;
+        let mut bytes = uuid_as_128.to_be_bytes().to_vec();
+        bytes.push(self.c);
+        bytes
+    }
+
+    /// Build Id instance from bytes
+    /// ```
+    /// use hyperid::{HyperId, Id};
+    /// let bytes = vec![0; 17];
+    /// let id = Id::from_bytes(bytes).unwrap();
+    /// assert_eq!(vec![0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], id.into_bytes());
+    /// ```
+    pub fn from_bytes(mut bytes: Vec<u8>) -> Result<Self, ParseIdError> {
+        if bytes.len() != 17 {
+            return Err(ParseIdError::WrongByteSize);
+        }
+        let c = bytes.pop().unwrap();
+        let mut arr = [0u8; 16];
+        bytes.swap_with_slice(&mut arr);
+        Ok(Self {
+            uuid_as_128: u128::from_be_bytes(arr),
+            c,
+        })
+    }
+
     /// Return an url safe string
     /// ```
     /// use hyperid::HyperId;
@@ -158,6 +213,7 @@ impl Id {
 pub enum ParseIdError {
     NoBaseFound,
     NoCounterFound,
+    WrongByteSize,
 }
 
 #[cfg(test)]
@@ -217,6 +273,19 @@ mod tests {
         let hyperid1 = HyperId::default();
         let hyperid2 = HyperId::default();
         assert_ne!(hyperid1.uuid, hyperid2.uuid);
+    }
+
+    #[test]
+    fn into_bytes() {
+        let hyperid = HyperId::default();
+
+        let id = hyperid.get();
+
+        let id_bytes = id.into_bytes();
+
+        let id_from_decode = Id::from_bytes(id_bytes).unwrap();
+
+        assert_eq!(hyperid.get(), id_from_decode);
     }
 
     #[cfg(feature = "url_safe")]
