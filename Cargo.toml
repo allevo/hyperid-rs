@@ -1,6 +1,6 @@
 [package]
 name = "hyperid"
-version = "2.1.1-alpha.0"
+version = "2.1.1"
 description = "Superfast id generator"
 authors = ["Tommaso Allevi <tomallevi@gmail.com>"]
 repository = "https://github.com/allevo/hyperid-rs"
