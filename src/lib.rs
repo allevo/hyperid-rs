@@ -66,10 +66,7 @@ impl HyperId {
         let uuid = Uuid::from_u128(uuid);
         let c = id.c;
 
-        Self {
-            uuid,
-            c,
-        }
+        Self { uuid, c }
     }
 
     /// Return the latest generated Id
@@ -121,7 +118,6 @@ pub struct Id {
 }
 
 impl Id {
-
     /// Return a bytes representation of id
     /// ```
     /// use hyperid::HyperId;
