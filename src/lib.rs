@@ -286,7 +286,6 @@ mod tests {
         assert_eq!(hyperid.get(), id_from_decode);
     }
 
-    
     #[test]
     fn id_could_be_the_key_of_hashmap() {
         let hyperid = HyperId::default();
