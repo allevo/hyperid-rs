@@ -8,7 +8,7 @@ This is a porting of the amazing hyperid project written in [javascript](https:/
 Add the dependency to your `Cargo.toml`:
 ```toml
 [dependencies]
-hyperid = "1"
+hyperid = "2"
 ```
 
 ## Usage
