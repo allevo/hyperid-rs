@@ -111,7 +111,7 @@ impl Default for HyperId {
     }
 }
 /// Structure for keeping data
-#[derive(PartialEq, Debug, Clone, Copy)]
+#[derive(PartialEq, Debug, Clone, Copy, Eq, Hash)]
 pub struct Id {
     uuid_as_128: u128,
     c: u8,
@@ -214,6 +214,8 @@ pub enum ParseIdError {
 
 #[cfg(test)]
 mod tests {
+    use std::collections::HashMap;
+
     use super::*;
 
     #[test]
@@ -282,6 +284,17 @@ mod tests {
         let id_from_decode = Id::from_bytes(id_bytes).unwrap();
 
         assert_eq!(hyperid.get(), id_from_decode);
+    }
+
+    
+    #[test]
+    fn id_could_be_the_key_of_hashmap() {
+        let hyperid = HyperId::default();
+
+        let id = hyperid.get();
+
+        let mut map = HashMap::new();
+        map.insert(id, true);
     }
 
     #[cfg(feature = "url_safe")]
