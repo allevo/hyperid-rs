@@ -111,7 +111,7 @@ impl Default for HyperId {
     }
 }
 /// Structure for keeping data
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq, Debug, Clone, Copy)]
 pub struct Id {
     uuid_as_128: u128,
     c: u8,
